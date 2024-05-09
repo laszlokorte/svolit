@@ -12,16 +12,19 @@ export default function Inner({}) {
   }))
 
   return (
-    <div class="row">
+    <>
       <Screen></Screen>
-      <PixelScreen></PixelScreen>
-      
-      <div>
-        Solid working x: {() => state().value}
-        <button onclick={fns.incr}>Incr</button>
-        <button onclick={fns.decr}>Decr</button>
-        <simple-greeting></simple-greeting>
+      <div class="zstack">
+        <PixelScreen></PixelScreen>
+
+        
+        <div>
+          Solid working x: {() => state().value}
+          <button onclick={fns.incr}>Incr</button>
+          <button onclick={fns.decr}>Decr</button>
+          <simple-greeting></simple-greeting>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

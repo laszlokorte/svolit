@@ -1,6 +1,6 @@
 .screen {
+	height: 100%;
+	width: 100%;
 	background: lightblue;
-	height: auto;
-	aspect-ratio: auto;
 	display: block;
 }

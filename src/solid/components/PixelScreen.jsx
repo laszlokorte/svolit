@@ -1,4 +1,5 @@
 import { moveTo, press, release } from '$redux/features/pointer'
+import { setSize as resize } from '$redux/features/viewport'
 import { createSignal, onCleanup, onMount, createEffect } from 'solid-js'
 import { useStoreContext } from '../context'
 import {eventToViewbox} from '$utils/canvas';
@@ -13,33 +14,37 @@ export default function Screen({}) {
     moveTo: (evt) => d(moveTo(eventToViewbox(evt))),
     press: (evt) => d(press()),
     release: (evt) => d(release()),
+    resize: (width, height) => d(resize({width, height})),
   }))
 
   let canvas
-  let [currentSize, setSize] = createSignal({width: 0, height: 0})
   let [currentCtx, setCtx] = createSignal()
 
 
   onMount(() => {
     const updateContext = (event) => {
       setCtx(canvas.getContext('2d'))
-      setSize({width: canvas.width, height: canvas.height})
+    }
+    const updateRealSize = (event) => {
+      fns.resize(canvas.offsetWidth, canvas.offsetHeight)
     }
 
     updateContext()
-    addEventListener("contextrestored", updateContext);
+    updateRealSize()
+    canvas.addEventListener("contextrestored", updateContext);
+    window.addEventListener("resize", updateRealSize);
 
     onCleanup(() => {
-      removeEventListener("contextrestored", updateContext);
+      canvas.removeEventListener("contextrestored", updateContext);
+      window.removeEventListener("resize", updateRealSize);
     })
 
     createEffect(() => {
       const ctx = currentCtx()
-      const size = currentSize()
       if(!ctx) {
         return
       }
-      ctx.clearRect(0, 0, size.width, size.height)
+      ctx.clearRect(0, 0, state().viewport.width, state().viewport.height)
       ctx.save()
       ctx.translate(state().viewport.width/2, state().viewport.height/2)
       ctx.beginPath();

@@ -19,13 +19,15 @@
 
 </script>
 
-<svg width={state.viewport.width} height={state.viewport.height} onpointermove={fns.moveTo} onpointerdown={fns.press} onpointerup={fns.release} viewBox={state.svgViewBox} preserveAspectRatio={state.svgAspectRatio}>
+<svg class="screen" width={state.viewport.width} height={state.viewport.height} onpointermove={fns.moveTo} onpointerdown={fns.press} onpointerup={fns.release} viewBox={state.svgViewBox} preserveAspectRatio={state.svgAspectRatio}>
 	<circle cx={state.pointer.x} cy={state.pointer.y} r="20" fill="white" class:pressed={state.pointer.pressed}></circle>
 </svg>
 
 <style>
-	svg {
+	.screen {
 		background: lightblue;
+		width: 100%;
+		height: 100%;
 	}
 
 	.pressed {

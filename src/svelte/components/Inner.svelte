@@ -13,8 +13,9 @@
 
 </script>
 
-<div class="row">
-	<Screen></Screen>
+<Screen></Screen>
+
+<div class="zstack">
 	<PixelScreen></PixelScreen>
 
 	

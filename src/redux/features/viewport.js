@@ -12,6 +12,10 @@ export const viewportSlice = createSlice({
   name: 'viewport',
   initialState,
   reducers: {
+    setSize: (s, {payload:{width, height}}) => {
+      s.width = width
+      s.height = height
+    }
   },
   selectors: {
     svgAspectRatio(s) {
@@ -21,7 +25,7 @@ export const viewportSlice = createSlice({
 })
 
 
-export const { } = viewportSlice.actions
+export const { setSize } = viewportSlice.actions
 
 export const { svgAspectRatio: svgAspectRatioSelector } = viewportSlice.selectors
 

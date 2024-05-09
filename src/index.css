@@ -7,3 +7,31 @@ body {
 	display: flex;
 	gap: 0.5em;
 }
+
+.zstack {
+	display: grid;
+	grid-template-rows: 1fr;
+	grid-template-columns: 1fr;
+	place-content: end;
+	place-items: end;
+	width: 100%;
+	height: 100%;
+}
+
+.zstack > * {
+	grid-area: 1 / 1 / -1 / -1;
+}
+
+.fullgrid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: calc(50% - 0.5em) calc(50% - 0.5em);
+	place-content: stretch;
+	place-items: stretch;
+	height: 100vh;
+	gap: 1em;
+}
+
+.fullgrid > * {
+	display: contents;
+}
