@@ -15,7 +15,7 @@ export default function Screen({}) {
 
   return (
     <svg on:pointermove={fns.moveTo} onpointerdown={fns.press} onpointerup={fns.release} class={styles.screen} viewBox="-500 -500 1000 1000">
-      <circle cx={state().pointer.x} cy={state().pointer.y} r="20" fill="red" classList={{[styles.pressed]: state().pointer.pressed}}></circle>
+      <circle cx={state().pointer.x} cy={state().pointer.y} r="20" classList={{[styles.pointer]: true, [styles.pressed]: state().pointer.pressed}}></circle>
     </svg>
   );
 }

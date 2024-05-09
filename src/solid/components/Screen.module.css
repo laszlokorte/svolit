@@ -1,8 +1,11 @@
-.screen {
-	background: black;
+svg {
+	background: lightblue;
 	max-width: 20em;
+}
+.pointer {
+	fill: white;
 }
 
 .pressed {
-	fill: green;
+	fill: lightcoral;
 }

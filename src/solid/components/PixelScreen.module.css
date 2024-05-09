@@ -1,0 +1,5 @@
+.screen {
+	background: lightblue;
+	max-width: 20em;
+	display: block;
+}

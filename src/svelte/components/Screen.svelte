@@ -15,16 +15,16 @@
 </script>
 
 <svg onpointermove={fns.moveTo} onpointerdown={fns.press} onpointerup={fns.release} viewBox="-500 -500 1000 1000">
-	<circle cx={state.pointer.x}  cy={state.pointer.y} r="20" fill="red" class:pressed={state.pointer.pressed}></circle>
+	<circle cx={state.pointer.x} cy={state.pointer.y} r="20" fill="white" class:pressed={state.pointer.pressed}></circle>
 </svg>
 
 <style>
 	svg {
-		background: black;
+		background: lightblue;
 		max-width: 20em;
 	}
 
 	.pressed {
-		fill: green;
+		fill: lightcoral;
 	}
 </style>
