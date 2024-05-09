@@ -7,7 +7,7 @@ const initialState = {
 }
 
 export const pointerSlice = createSlice({
-  name: 'counter',
+  name: 'pointer',
   initialState,
   reducers: {
     moveTo: (state, {payload: {x,y}}) => {

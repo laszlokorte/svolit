@@ -5,8 +5,9 @@
 	import Screen from './Screen.svelte';
 	import {eventToViewbox} from '$utils/canvas';
 
-	let [pointer, fns] = useStoreContext((s) => ({
+	let [stat, fns] = useStoreContext((s) => ({
 		pointer: s.pointer,
+		viewport: s.viewport,
 	}), (d) => ({
 		moveTo: (evt) => d(moveTo(eventToViewbox(evt))),
 		press: (evt) => d(press()),
@@ -38,11 +39,11 @@
 		}
 		ctx.clearRect(0, 0, size.width, size.height)
 		ctx.save()
-		ctx.translate(500, 500)
+		ctx.translate(stat.viewport.width/2, stat.viewport.height/2)
 		ctx.beginPath();
-		ctx.arc(pointer.pointer.x, pointer.pointer.y, 20, 0, 2 * Math.PI);
+		ctx.arc(stat.pointer.x, stat.pointer.y, 20, 0, 2 * Math.PI);
 		ctx.fillStyle = "white";
-		if(pointer.pointer.pressed) {
+		if(stat.pointer.pressed) {
 			ctx.fillStyle = "lightcoral";
 		}
 		ctx.fill();
@@ -51,11 +52,11 @@
 
 </script>
 
-<canvas onpointermove={fns.moveTo} onpointerdown={fns.press} onpointerup={fns.release} bind:this={canvas} width="1000" height="1000"></canvas>
+<canvas width={stat.viewport.width} height={stat.viewport.height} onpointermove={fns.moveTo} onpointerdown={fns.press} onpointerup={fns.release} bind:this={canvas}></canvas>
 
 <style>
 	canvas {
-		max-width: 20em;
+		height: auto;
 		background: lightblue;
 		display: block;
 	}

@@ -8,6 +8,7 @@ import styles from './PixelScreen.module.css'
 export default function Screen({}) {
   let [state, fns] = useStoreContext((s) => ({
     pointer: s.pointer,
+    viewport: s.viewport,
   }), (d) => ({
     moveTo: (evt) => d(moveTo(eventToViewbox(evt))),
     press: (evt) => d(press()),
@@ -40,7 +41,7 @@ export default function Screen({}) {
       }
       ctx.clearRect(0, 0, size.width, size.height)
       ctx.save()
-      ctx.translate(500, 500)
+      ctx.translate(state().viewport.width/2, state().viewport.height/2)
       ctx.beginPath();
       ctx.arc(state().pointer.x, state().pointer.y, 20, 0, 2 * Math.PI);
       ctx.fillStyle = "white";
@@ -54,6 +55,6 @@ export default function Screen({}) {
   
 
   return (
-    <canvas onpointermove={fns.moveTo} onpointerdown={fns.press} onpointerup={fns.release} ref={canvas} width="1000" height="1000" class={styles.screen}></canvas>
+    <canvas width={state().viewport.width} height={state().viewport.height} onpointermove={fns.moveTo} onpointerdown={fns.press} onpointerup={fns.release} ref={canvas}class={styles.screen}></canvas>
   );
 }

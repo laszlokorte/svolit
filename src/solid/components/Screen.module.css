@@ -1,6 +1,5 @@
-svg {
+.screen {
 	background: lightblue;
-	max-width: 20em;
 }
 .pointer {
 	fill: white;
