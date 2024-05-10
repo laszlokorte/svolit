@@ -48,8 +48,7 @@
 		}
 		ctx.clearRect(0, 0, stat.viewport.width, stat.viewport.height)
 		ctx.save()
-		ctx.translate(stat.scaling.offsetX, stat.scaling.offsetY)
-		ctx.scale(stat.scaling.factorX, stat.scaling.factorY)
+		ctx.transform(stat.scaling.scaleX, 0, 0, stat.scaling.scaleY, stat.scaling.translateX, stat.scaling.translateY)
 		
 		ctx.beginPath();
 		ctx.fillStyle = "lightpink";
@@ -69,6 +68,16 @@
 		ctx.fillStyle = "black";
 		ctx.arc(0, 0, 5, 0, 2 * Math.PI);
 		ctx.fill();
+
+
+		ctx.beginPath();
+		ctx.rect(stat.scaling.minX+10, stat.scaling.minY+10, stat.scaling.width-20, stat.scaling.height-20);
+		ctx.closePath();
+		ctx.restore()
+		ctx.strokeStyle = "purple";
+		ctx.lineWidth = 1;
+		ctx.stroke()
+
 
 		ctx.restore()
 

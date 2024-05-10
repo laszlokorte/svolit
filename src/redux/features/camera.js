@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   screenSize: {
     width: 800,
-    height: 400,
+    height: 1600,
   },
   focus: {
     x: 0,

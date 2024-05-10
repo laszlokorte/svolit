@@ -3,9 +3,9 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   width: 600,
   height: 400,
-  alignX: 'Min',
-  alignY: 'Min',
-  fit: 'none',
+  alignX: 'Mid',
+  alignY: 'Mid',
+  fit: 'meet',
 }
 
 export const viewportSlice = createSlice({
