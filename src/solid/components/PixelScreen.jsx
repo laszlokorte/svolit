@@ -1,25 +1,12 @@
-import { moveTo, press, release } from '$redux/features/pointer'
-import { setSize as resize } from '$redux/features/viewport'
-import { svgViewBoxRectSelector } from '$redux/features/camera'
-import { viewBoxScaleSelector } from '$redux/selectors/screen'
 import { createSignal, onCleanup, onMount, createEffect } from 'solid-js'
 import { useStoreContext } from '../context'
-import {eventToViewbox} from '$utils/canvas';
+import { eventToViewbox } from '$utils/canvas';
+import { screenAdapter } from '$adapters/screen';
 
 import styles from './PixelScreen.module.css'
 
 export default function Screen({}) {
-  let [state, fns] = useStoreContext((s) => ({
-    pointer: s.pointer,
-    viewport: s.viewport,
-    viewBoxRect: svgViewBoxRectSelector(s),
-    scaling: viewBoxScaleSelector(s),
-  }), (d) => ({
-    moveTo: (evt) => d(moveTo(eventToViewbox(evt))),
-    press: (evt) => d(press()),
-    release: (evt) => d(release()),
-    resize: (width, height) => d(resize({width, height})),
-  }))
+  let [state, fns] = screenAdapter(useStoreContext, eventToViewbox)
 
   let canvas
   let [currentCtx, setCtx] = createSignal()

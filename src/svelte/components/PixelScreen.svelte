@@ -1,24 +1,11 @@
 <script>
 	import { onMount } from 'svelte'
-	import { moveTo, press, release } from '$redux/features/pointer'
-	import { setSize as resize } from '$redux/features/viewport'
-	import { svgViewBoxRectSelector } from '$redux/features/camera'
-	import { viewBoxScaleSelector } from '$redux/selectors/screen'
 	import { useStoreContext } from '../context.svelte.js';
-	import Screen from './Screen.svelte';
-	import {eventToViewbox} from '$utils/canvas';
+	import { eventToViewbox } from '$utils/canvas';
+	import { screenAdapter } from '$adapters/screen';
 
-	let [stat, fns] = useStoreContext((s) => ({
-		pointer: s.pointer,
-		viewport: s.viewport,
-		viewBoxRect: svgViewBoxRectSelector(s),
-		scaling: viewBoxScaleSelector(s),
-	}), (d) => ({
-		moveTo: (evt) => d(moveTo(eventToViewbox(evt))),
-		press: (evt) => d(press()),
-		release: (evt) => d(release()),
-    	resize: (width, height) => d(resize({width, height})),
-	}))
+	
+  	let [stat, fns] = screenAdapter(useStoreContext, eventToViewbox)
 
 	let canvas
 	let ctx = $state()

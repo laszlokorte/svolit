@@ -1,25 +1,11 @@
-import { moveTo, press, release } from '$redux/features/pointer'
-import { svgAspectRatioSelector } from '$redux/features/viewport'
-import { svgViewBoxSelector, svgViewBoxRectSelector } from '$redux/features/camera'
-import { viewBoxScaleSelector } from '$redux/selectors/screen'
 import { useStoreContext } from '../context'
-import {eventToViewbox} from '$utils/svg';
+import { eventToViewbox } from '$utils/svg';
+import { screenAdapter } from '$adapters/screen';
 
 import styles from './Screen.module.css'
 
 export default function Screen({}) {
-  let [state, fns] = useStoreContext((s) => ({
-    pointer: s.pointer,
-    viewport: s.viewport,
-    svgViewBox: svgViewBoxSelector(s),
-    viewBoxRect: svgViewBoxRectSelector(s),
-    svgAspectRatio: svgAspectRatioSelector(s),
-    scaling: viewBoxScaleSelector(s),
-  }), (d) => ({
-    moveTo: (evt) => d(moveTo(eventToViewbox(evt))),
-    press: (evt) => d(press()),
-    release: (evt) => d(release()),
-  }))
+  let [state, fns] = screenAdapter(useStoreContext, eventToViewbox)
 
   return (
     <svg width={state().viewport.width} height={state().viewport.height}  on:pointermove={fns.moveTo} onpointerdown={fns.press} onpointerup={fns.release} class={styles.screen} viewBox={state().svgViewBox} preserveAspectRatio={state().svgAspectRatio}>

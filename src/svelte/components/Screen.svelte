@@ -1,25 +1,9 @@
 <script>
-	import { moveTo, press, release } from '$redux/features/pointer'
-	import { svgAspectRatioSelector } from '$redux/features/viewport'
-	import { svgViewBoxSelector, svgViewBoxRectSelector } from '$redux/features/camera'
-	import { viewBoxScaleSelector } from '$redux/selectors/screen'
 	import { useStoreContext } from '../context.svelte.js';
-	import Screen from './Screen.svelte';
-	import {eventToViewbox} from '$utils/svg';
-
-	let [state, fns] = useStoreContext((s) => ({
-		pointer: s.pointer,
-		viewport: s.viewport,
-		svgViewBox: svgViewBoxSelector(s),
-		viewBoxRect: svgViewBoxRectSelector(s),
-		svgAspectRatio: svgAspectRatioSelector(s),
-    scaling: viewBoxScaleSelector(s),
-	}), (d) => ({
-		moveTo: (evt) => d(moveTo(eventToViewbox(evt))),
-		press: (evt) => d(press()),
-		release: (evt) => d(release()),
-	}))
-
+	import { eventToViewbox } from '$utils/svg';
+	import { screenAdapter } from '$adapters/screen';
+	
+  	let [state, fns] = screenAdapter(useStoreContext, eventToViewbox)
 </script>
 
 <svg class="screen" width={state.viewport.width} height={state.viewport.height} onpointermove={fns.moveTo} onpointerdown={fns.press} onpointerup={fns.release} viewBox={state.svgViewBox} preserveAspectRatio={state.svgAspectRatio}>
