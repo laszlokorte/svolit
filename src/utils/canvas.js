@@ -1,5 +1,3 @@
-const domPoint = new DOMPoint()
-
 export function eventToViewbox(evt) {
     const target = evt.currentTarget
     const rect = target.getBoundingClientRect();

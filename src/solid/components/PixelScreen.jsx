@@ -1,12 +1,11 @@
 import { createSignal, onCleanup, onMount, createEffect } from 'solid-js'
 import { useStoreContext } from '../context'
-import { eventToViewbox } from '$utils/canvas';
 import { screenAdapter } from '$adapters/screen';
 
 import styles from './PixelScreen.module.css'
 
 export default function Screen({}) {
-  let [state, fns] = screenAdapter(useStoreContext, eventToViewbox)
+  let [state, fns] = screenAdapter(useStoreContext)
 
   let canvas
   let [currentCtx, setCtx] = createSignal()
@@ -50,7 +49,7 @@ export default function Screen({}) {
       ctx.beginPath();
       ctx.arc(stat.pointer.x, stat.pointer.y, 20, 0, 2 * Math.PI);
       ctx.fillStyle = "white";
-      if(stat.pointer.pressed) {
+      if(stat.pressed) {
         ctx.fillStyle = "lightcoral";
       }
       ctx.closePath();

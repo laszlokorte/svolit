@@ -1,11 +1,10 @@
 <script>
 	import { onMount } from 'svelte'
 	import { useStoreContext } from '../context.svelte.js';
-	import { eventToViewbox } from '$utils/canvas';
 	import { screenAdapter } from '$adapters/screen';
 
 	
-  	let [stat, fns] = screenAdapter(useStoreContext, eventToViewbox)
+  	let [stat, fns] = screenAdapter(useStoreContext)
 
 	let canvas
 	let ctx = $state()
@@ -45,7 +44,7 @@
 
 		ctx.beginPath();
 		ctx.fillStyle = "white";
-		if(stat.pointer.pressed) {
+		if(stat.pressed) {
 			ctx.fillStyle = "lightcoral";
 		}
 		ctx.arc(stat.pointer.x, stat.pointer.y, 20, 0, 2 * Math.PI);
