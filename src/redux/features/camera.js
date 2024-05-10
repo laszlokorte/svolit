@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   screenSize: {
-    width: 500,
-    height: 500,
+    width: 100,
+    height: 400,
   },
   focus: {
     x: 0,
@@ -21,12 +21,20 @@ export const cameraSlice = createSlice({
     svgViewBox(s) {
       return `${-s.screenSize.width/2} ${-s.screenSize.height/2} ${s.screenSize.width} ${s.screenSize.height}`
     },
+    svgViewBoxRect(s) {
+      return {
+        x: -s.screenSize.width/2,
+        y: -s.screenSize.height/2,
+        width: s.screenSize.width,
+        height: s.screenSize.height,
+      }
+    },
   }
 })
 
 
 export const { } = cameraSlice.actions
 
-export const { svgViewBox: svgViewBoxSelector } = cameraSlice.selectors
+export const { svgViewBox: svgViewBoxSelector, svgViewBoxRect: svgViewBoxRectSelector } = cameraSlice.selectors
 
 export default cameraSlice.reducer

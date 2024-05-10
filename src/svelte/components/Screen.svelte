@@ -1,7 +1,7 @@
 <script>
 	import { moveTo, press, release } from '$redux/features/pointer'
 	import { svgAspectRatioSelector } from '$redux/features/viewport'
-	import { svgViewBoxSelector } from '$redux/features/camera'
+	import { svgViewBoxSelector, svgViewBoxRectSelector } from '$redux/features/camera'
 	import { useStoreContext } from '../context.svelte.js';
 	import Screen from './Screen.svelte';
 	import {eventToViewbox} from '$utils/svg';
@@ -10,6 +10,7 @@
 		pointer: s.pointer,
 		viewport: s.viewport,
 		svgViewBox: svgViewBoxSelector(s),
+		viewBoxRect: svgViewBoxRectSelector(s),
 		svgAspectRatio: svgAspectRatioSelector(s),
 	}), (d) => ({
 		moveTo: (evt) => d(moveTo(eventToViewbox(evt))),
@@ -20,7 +21,9 @@
 </script>
 
 <svg class="screen" width={state.viewport.width} height={state.viewport.height} onpointermove={fns.moveTo} onpointerdown={fns.press} onpointerup={fns.release} viewBox={state.svgViewBox} preserveAspectRatio={state.svgAspectRatio}>
+	<rect fill="pink" {...state.viewBoxRect} />
 	<circle cx={state.pointer.x} cy={state.pointer.y} r="20" fill="white" class:pressed={state.pointer.pressed}></circle>
+	<circle cx={0} cy={0} r="5" fill="black"></circle>
 </svg>
 
 <style>

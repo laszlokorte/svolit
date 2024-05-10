@@ -1,6 +1,6 @@
 import { moveTo, press, release } from '$redux/features/pointer'
 import { svgAspectRatioSelector } from '$redux/features/viewport'
-import { svgViewBoxSelector } from '$redux/features/camera'
+import { svgViewBoxSelector, svgViewBoxRectSelector } from '$redux/features/camera'
 import { useStoreContext } from '../context'
 import {eventToViewbox} from '$utils/svg';
 
@@ -11,6 +11,7 @@ export default function Screen({}) {
     pointer: s.pointer,
     viewport: s.viewport,
     svgViewBox: svgViewBoxSelector(s),
+    viewBoxRect: svgViewBoxRectSelector(s),
     svgAspectRatio: svgAspectRatioSelector(s),
   }), (d) => ({
     moveTo: (evt) => d(moveTo(eventToViewbox(evt))),
@@ -20,6 +21,7 @@ export default function Screen({}) {
 
   return (
     <svg width={state().viewport.width} height={state().viewport.height}  on:pointermove={fns.moveTo} onpointerdown={fns.press} onpointerup={fns.release} class={styles.screen} viewBox={state().svgViewBox} preserveAspectRatio={state().svgAspectRatio}>
+      <rect fill="pink" {...state().viewBoxRect} />
       <circle cx={state().pointer.x} cy={state().pointer.y} r="20" classList={{[styles.pointer]: true, [styles.pressed]: state().pointer.pressed}}></circle>
     </svg>
   );

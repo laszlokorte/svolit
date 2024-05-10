@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   width: 600,
   height: 400,
-  alignX: 'mid',
-  alignY: 'mid',
+  alignX: 'Min',
+  alignY: 'Mid',
   fit: 'meet',
 }
 

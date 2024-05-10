@@ -4,6 +4,8 @@ import pointerReducer from './features/pointer'
 import viewportReducer from './features/viewport'
 import cameraReducer from './features/camera'
 
+
+
 export default function() {
 	return configureStore({
 	  reducer: {
