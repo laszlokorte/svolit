@@ -4,8 +4,8 @@ const initialState = {
   width: 600,
   height: 400,
   alignX: 'Min',
-  alignY: 'Mid',
-  fit: 'meet',
+  alignY: 'Min',
+  fit: 'none',
 }
 
 export const viewportSlice = createSlice({
@@ -19,7 +19,7 @@ export const viewportSlice = createSlice({
   },
   selectors: {
     svgAspectRatio(s) {
-      return s.fit ? `x${s.alignX}Y${s.alignY} ${s.fit}` : 'none'
+      return s.fit !== 'none' ? `x${s.alignX}Y${s.alignY} ${s.fit}` : 'none'
     },
   }
 })

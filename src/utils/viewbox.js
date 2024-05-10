@@ -5,6 +5,10 @@ export function scaleViewBox({minX, minY, width, height, scaling, alignX, alignY
 			minY: minY,
 			width: width,
 			height: height,
+			factorX: targetWidth/width,
+			factorY: targetHeight/height,
+			offsetX: targetWidth/2,
+			offsetY: targetHeight/2,
 		}
 	} else {
 		const relWidth = width/targetWidth
@@ -25,6 +29,7 @@ export function scaleViewBox({minX, minY, width, height, scaling, alignX, alignY
 			'Mid': 0.5,
 			'Max': 1,
 		};
+
 		
 		const extraWeightingX = alignmentWeights[alignX];
 		const extraWeightingY = alignmentWeights[alignY];
@@ -34,6 +39,10 @@ export function scaleViewBox({minX, minY, width, height, scaling, alignX, alignY
 			minY: minY - extraWeightingY * extraHeight,
 			width: actualWidth,
 			height: actualHeight,
+			factorX: 1/factor,
+			factorY: 1/factor,
+			offsetX: (targetWidth - extraWidth/factor)/2 + extraWidth/factor * extraWeightingX,
+			offsetY: (targetHeight - extraHeight/factor)/2 + extraHeight/factor * extraWeightingY,
 		}
 	}
 }

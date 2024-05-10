@@ -12,7 +12,7 @@
 		pointer: s.pointer,
 		viewport: s.viewport,
 		viewBoxRect: svgViewBoxRectSelector(s),
-		scaling: viewBoxScaleSelector(s)
+		scaling: viewBoxScaleSelector(s),
 	}), (d) => ({
 		moveTo: (evt) => d(moveTo(eventToViewbox(evt))),
 		press: (evt) => d(press()),
@@ -48,7 +48,8 @@
 		}
 		ctx.clearRect(0, 0, stat.viewport.width, stat.viewport.height)
 		ctx.save()
-		ctx.translate(stat.viewport.width/2, stat.viewport.height/2)
+		ctx.translate(stat.scaling.offsetX, stat.scaling.offsetY)
+		ctx.scale(stat.scaling.factorX, stat.scaling.factorY)
 		
 		ctx.beginPath();
 		ctx.fillStyle = "lightpink";
@@ -70,6 +71,7 @@
 		ctx.fill();
 
 		ctx.restore()
+
 	})
 
 </script>
