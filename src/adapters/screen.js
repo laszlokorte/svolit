@@ -12,7 +12,7 @@ import { viewBoxScaleSelector } from '$redux/selectors/screen'
 import { eventToRelative } from '$utils/relative';
 
 export function screenAdapter(useStoreContext) {
-	return useStoreContext(selector, dispatcher)
+	return useStoreContext(selector, dispatcher, queries)
 }
 
 export const selector = (s) => ({
@@ -53,3 +53,51 @@ export const dispatcher = (d, store) => ({
 		}
 	},
 })
+
+function queries(sel) {
+	return {
+		doCamWorldTransform(ctx) {
+			ctx.transform(
+			  sel.state.camTransform.scaleX, 0,
+			  0, sel.state.camTransform.scaleY,
+			  0,
+			  0
+			)
+
+			ctx.transform(
+			  1, 0,
+			  0, 1,
+			  sel.state.camTransform.translateX,
+			  sel.state.camTransform.translateY
+			)
+		},
+
+		doCamWorldTransformPosition(ctx) {
+			ctx.transform(
+			  1, 0,
+			  0, 1,
+			  sel.state.camTransform.scaleX*sel.state.camTransform.translateX,
+			  sel.state.camTransform.scaleY*sel.state.camTransform.translateY
+			)
+		},
+		worldX(x, y) {
+			return sel.state.camTransform.scaleX * (x + sel.state.camTransform.translateX)
+		},
+		worldY(x, y) {
+			return sel.state.camTransform.scaleY * (y + sel.state.camTransform.translateY)
+		},
+		worldScaleX(s) {
+			return sel.state.camTransform.scaleX * s
+		},
+		worldScaleY(s) {
+			return sel.state.camTransform.scaleY * s
+		},
+		worldXY(x, y) {
+			return [
+			  sel.state.camTransform.scaleX * (x + sel.state.camTransform.translateX),
+			  sel.state.camTransform.scaleY * (y + sel.state.camTransform.translateY)
+			]
+		},
+
+	}
+}

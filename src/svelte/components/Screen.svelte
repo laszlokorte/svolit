@@ -3,43 +3,20 @@
 	import { screenAdapter } from '$adapters/screen';
 	import { worldAdapter } from '$adapters/world';
 	
-  	let [state, fns] = screenAdapter(useStoreContext)
+  	let [state, fns, q] = screenAdapter(useStoreContext)
   	let [world, _] = worldAdapter(useStoreContext)
-
-  	function worldX(x, y) {
-  		return state.camTransform.scaleX * (x + state.camTransform.translateX)
-  	}
-
-  	function worldY(x, y) {
-  		return state.camTransform.scaleY * (y + state.camTransform.translateY)
-  	}
-
-  	function worldScaleX(s) {
-  		return state.camTransform.scaleX * s
-  	}
-
-  	function worldScaleY(s) {
-  		return state.camTransform.scaleY * s
-  	}
-
-  	function worldXY(x, y) {
-  		return [
-  			state.camTransform.scaleX * (x + state.camTransform.translateX),
-  			state.camTransform.scaleY * (y + state.camTransform.translateY)
-  		]
-  	}
 </script>
 
 <svg onwheel={fns.zoomWheel} class="screen" width={state.viewport.width} height={state.viewport.height} onpointermove={fns.panMove} onpointerdown={fns.panStart} onpointerup={fns.panStop} viewBox={state.originSvgViewBox} preserveAspectRatio={state.svgAspectRatio}>
 	<rect fill="pink" {...state.originViewBoxRect} />
-	<circle cx={worldX(0,0)} cy={worldY(0,0)} r="5" fill="black"></circle>
+	<circle cx={q.worldX(0,0)} cy={q.worldY(0,0)} r="5" fill="black"></circle>
 	
 
 	<rect 
-	x={worldX(world.bounds.minX, world.bounds.minY)} 
-	y={worldY(world.bounds.minX, world.bounds.minY)} 
-	width={worldScaleX(world.bounds.maxX - world.bounds.minX)} 
-	height={worldScaleY(world.bounds.maxY - world.bounds.minY)} 
+	x={q.worldX(world.bounds.minX, world.bounds.minY)} 
+	y={q.worldY(world.bounds.minX, world.bounds.minY)} 
+	width={q.worldScaleX(world.bounds.maxX - world.bounds.minX)} 
+	height={q.worldScaleY(world.bounds.maxY - world.bounds.minY)} 
 	fill="#eee" />
 
 	{#each world.visiblePolygons as poly}

@@ -5,33 +5,8 @@
 	import { worldAdapter } from '$adapters/world';
 
 	
-  	let [stat, fns] = screenAdapter(useStoreContext)
+  	let [stat, fns, q] = screenAdapter(useStoreContext)
   	let [world, _] = worldAdapter(useStoreContext)
-
-  	function doCamWorldTransform(ctx) {
-  		ctx.transform(
-  			stat.camTransform.scaleX, 0,
-  			0, stat.camTransform.scaleY,
-  			0,
-  			0
-  		)
-
-  		ctx.transform(
-  			1, 0,
-  			0, 1,
-  			stat.camTransform.translateX,
-  			stat.camTransform.translateY
-  		)
-  	}
-
-  	function doCamWorldTransformPosition(ctx) {
-  		ctx.transform(
-  			1, 0,
-  			0, 1,
-  			stat.camTransform.scaleX*stat.camTransform.translateX,
-  			stat.camTransform.scaleY*stat.camTransform.translateY
-  		)
-  	}
 
 	let canvas
 	let ctx = $state()
@@ -72,7 +47,7 @@
 
 		ctx.beginPath();
 		ctx.save()
-		doCamWorldTransformPosition(ctx);
+		q.doCamWorldTransformPosition(ctx);
 		ctx.arc(0, 0, 5, 0, 2 * Math.PI);
 		ctx.restore();
 		ctx.fillStyle = "black";
@@ -83,7 +58,7 @@
 
 		ctx.save()
 		ctx.beginPath();
-		doCamWorldTransform(ctx);
+		q.doCamWorldTransform(ctx);
 		ctx.rect(world.bounds.minX, world.bounds.minY,
 			world.bounds.maxX - world.bounds.minX,
 			world.bounds.maxY - world.bounds.minY);
@@ -101,7 +76,7 @@
 			ctx.fill()
 		}
 
-		
+
 		ctx.beginPath();
 		ctx.fillStyle = "rebeccapurple";
 		if(stat.pressed) {

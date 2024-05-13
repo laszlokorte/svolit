@@ -13,7 +13,7 @@ export function StoreProvider(props) {
   )
 }
 
-export function useStoreContext(mapStateFn, mapDispatchFn) {
+export function useStoreContext(mapStateFn, mapDispatchFn, fns) {
   const store = useContext(StoreContext)
   if (!store) {
     throw new Error("useCounterContext: cannot find a StoreContext")
@@ -29,7 +29,8 @@ export function useStoreContext(mapStateFn, mapDispatchFn) {
 
   const value = [
     currentState,
-    mapDispatchFn ? mapDispatchFn(store.dispatch, store) : store.dispatch
+    mapDispatchFn ? mapDispatchFn(store.dispatch, store) : store.dispatch,
+    fns ? fns({get state() {return currentState()}}) : fns,
   ]
 
   return value

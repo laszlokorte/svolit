@@ -6,7 +6,7 @@ export function setStoreContext(store) {
 	setContext(reduxStore, store)
 }
 
-export function useStoreContext(mapStateFn, mapDispatchFn) {
+export function useStoreContext(mapStateFn, mapDispatchFn, fns) {
 	const store = getContext(reduxStore)
 
 	const currentState = $state(mapStateFn(store.getState()));
@@ -24,6 +24,7 @@ export function useStoreContext(mapStateFn, mapDispatchFn) {
 
 	return [
 		currentState,
-		mapDispatchFn ? mapDispatchFn(store.dispatch, store) : store.dispatch
+		mapDispatchFn ? mapDispatchFn(store.dispatch, store) : store.dispatch,
+		fns ? fns({get state() {return currentState}}) : fns,
 	]
 }

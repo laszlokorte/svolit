@@ -8,36 +8,11 @@ import styles from './PixelScreen.module.css'
 
 export default function Screen({}) {
   
-  let [state, fns] = screenAdapter(useStoreContext)
+  let [state, fns, q] = screenAdapter(useStoreContext)
   let [world, _] = worldAdapter(useStoreContext)
 
   let canvas
   let [currentCtx, setCtx] = createSignal()
-
-  function doCamWorldTransform(ctx) {
-    ctx.transform(
-      state().camTransform.scaleX, 0,
-      0, state().camTransform.scaleY,
-      0,
-      0
-    )
-
-    ctx.transform(
-      1, 0,
-      0, 1,
-      state().camTransform.translateX,
-      state().camTransform.translateY
-    )
-  }
-
-  function doCamWorldTransformPosition(ctx) {
-    ctx.transform(
-      1, 0,
-      0, 1,
-      state().camTransform.scaleX*state().camTransform.translateX,
-      state().camTransform.scaleY*state().camTransform.translateY
-    )
-  }
 
 
   onMount(() => {
@@ -79,7 +54,7 @@ export default function Screen({}) {
 
       ctx.beginPath();
       ctx.save()
-      doCamWorldTransformPosition(ctx);
+      q.doCamWorldTransformPosition(ctx);
       ctx.arc(0, 0, 5, 0, 2 * Math.PI);
       ctx.restore();
       ctx.fillStyle = "black";
@@ -92,7 +67,7 @@ export default function Screen({}) {
 
       ctx.save()
       ctx.beginPath();
-      doCamWorldTransform(ctx);
+      q.doCamWorldTransform(ctx);
       ctx.rect(world().bounds.minX, world().bounds.minY,
         world().bounds.maxX - world().bounds.minX,
         world().bounds.maxY - world().bounds.minY);
@@ -111,7 +86,7 @@ export default function Screen({}) {
       }
 
 
-        
+
       ctx.beginPath();
       ctx.fillStyle = "rebeccapurple";
       if(stat.pressed) {
