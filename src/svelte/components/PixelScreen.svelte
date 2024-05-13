@@ -2,9 +2,36 @@
 	import { onMount } from 'svelte'
 	import { useStoreContext } from '../context.svelte.js';
 	import { screenAdapter } from '$adapters/screen';
+	import { worldAdapter } from '$adapters/world';
 
 	
   	let [stat, fns] = screenAdapter(useStoreContext)
+  	let [world, _] = worldAdapter(useStoreContext)
+
+  	function doCamWorldTransform(ctx) {
+  		ctx.transform(
+  			stat.camTransform.scaleX, 0,
+  			0, stat.camTransform.scaleY,
+  			0,
+  			0
+  		)
+
+  		ctx.transform(
+  			1, 0,
+  			0, 1,
+  			stat.camTransform.translateX,
+  			stat.camTransform.translateY
+  		)
+  	}
+
+  	function doCamWorldTransformPosition(ctx) {
+  		ctx.transform(
+  			1, 0,
+  			0, 1,
+  			stat.camTransform.scaleX*stat.camTransform.translateX,
+  			stat.camTransform.scaleY*stat.camTransform.translateY
+  		)
+  	}
 
 	let canvas
 	let ctx = $state()
@@ -38,7 +65,7 @@
 		
 		ctx.beginPath();
 		ctx.fillStyle = "lightpink";
-		ctx.rect(stat.viewBoxRect.x, stat.viewBoxRect.y, stat.viewBoxRect.width, stat.viewBoxRect.height);
+		ctx.rect(stat.originViewBoxRect.x, stat.originViewBoxRect.y, stat.originViewBoxRect.width, stat.originViewBoxRect.height);
 		ctx.closePath();
 		ctx.fill()
 
@@ -51,27 +78,39 @@
 		ctx.fill();
 
 		ctx.beginPath();
-		ctx.fillStyle = "black";
+		ctx.save()
+		doCamWorldTransformPosition(ctx);
 		ctx.arc(0, 0, 5, 0, 2 * Math.PI);
+		ctx.restore();
+		ctx.fillStyle = "black";
 		ctx.fill();
 
+
+      	ctx.fillStyle = "green";
+		for(let poly of world.visiblePolygons) {
+			ctx.beginPath();
+			for(let {x,y} of poly.vertices) {
+				ctx.lineTo(x,y)
+			}
+			ctx.closePath();
+			ctx.fill()
+		}
 
 		ctx.beginPath();
 		ctx.rect(stat.scaling.minX+10, stat.scaling.minY+10, stat.scaling.width-20, stat.scaling.height-20);
 		ctx.closePath();
 		ctx.restore()
 		ctx.strokeStyle = "purple";
-		ctx.lineWidth = 1;
+		ctx.lineWidth = 2;
 		ctx.stroke()
 
 
-		ctx.restore()
 
 	})
 
 </script>
 
-<canvas class="screen" width={stat.viewport.width} height={stat.viewport.height} onpointermove={fns.moveTo} onpointerdown={fns.press} onpointerup={fns.release} bind:this={canvas}></canvas>
+<canvas onwheel={fns.zoomWheel} class="screen" width={stat.viewport.width} height={stat.viewport.height} onpointermove={fns.panMove} onpointerdown={fns.panStart} onpointerup={fns.panStop}  bind:this={canvas}></canvas>
 
 <style>
 	.screen {

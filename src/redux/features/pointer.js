@@ -12,9 +12,9 @@ export const pointerSlice = createSlice({
   name: 'pointer',
   initialState,
   reducers: {
-    moveTo: (state, {payload: {worldX, worldY}}) => {
-      state.position.x = worldX
-      state.position.y = worldY
+    moveTo: (state, {payload: {x, y}}) => {
+      state.position.x = x
+      state.position.y = y
     },
     press: (state) => {
       state.pressed = true

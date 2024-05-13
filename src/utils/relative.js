@@ -1,6 +1,6 @@
 const domPoint = new DOMPoint()
 
-export function eventToRealtive(evt) {
+export function eventToRelative(evt) {
     const target = evt.currentTarget
     const rect = target.getBoundingClientRect();
 

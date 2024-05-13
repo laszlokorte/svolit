@@ -24,6 +24,6 @@ export function useStoreContext(mapStateFn, mapDispatchFn) {
 
 	return [
 		currentState,
-		mapDispatchFn ? mapDispatchFn(store.dispatch) : store.dispatch
+		mapDispatchFn ? mapDispatchFn(store.dispatch, store) : store.dispatch
 	]
 }

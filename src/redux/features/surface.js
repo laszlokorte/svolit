@@ -37,29 +37,51 @@ function interceptAction(guard, modifier) {
 	}
 }
 
-const interceptSurfacePosition = interceptAction(
-	(state, action) => action.payload && (action.payload.relativeX || action.payload.relativeY), 
-	(state, action) => {
-		const vis = visibleRange(state)
-		action.payload.x = vis.minX + vis.width * action.payload.relativeX;
-		action.payload.y = vis.minY + vis.height * action.payload.relativeY;
+export function relativeToCamera(state, relative) {
+	const vis = visibleRange(state)
+	
+	return {
+		x: vis.minX + vis.width * relative.relativeX,
+		y: vis.minY + vis.height * relative.relativeY,
 	}
-)
+}
 
-const interceptWorldPosition = interceptAction(
-	(state, action) => action.payload && (action.payload.x || action.payload.y), 
-	(state, action) => {
-		const vis = visibleRange(state)
-		action.payload.worldX = action.payload.x;
-		action.payload.worldY = action.payload.y;
+
+export function cameraToWorld(state, camPos) {
+	const cam = state.camera
+	const zoomFactor = Math.exp(cam.focus.z)
+
+	return {
+		worldX: (camPos.x/zoomFactor + cam.focus.x),
+		worldY: (camPos.y/zoomFactor + cam.focus.y),
 	}
-)
+}
 
-export const surfaceReducer = interceptSurfacePosition(interceptWorldPosition(combineReducers({
+
+// const interceptSurfacePosition = interceptAction(
+// 	(state, action) => action.payload && (action.payload.relativeX || action.payload.relativeY), 
+// 	(state, action) => {
+// 		const cam = relativeToCamera(state, action.payload)
+// 		action.payload.x = cam.x;
+// 		action.payload.y = cam.y;
+// 	}
+// )
+
+// const interceptWorldPosition = interceptAction(
+// 	(state, action) => action.payload && (action.payload.x || action.payload.y), 
+// 	(state, action) => {
+// 		const cam = relativeToCamera(state, action.payload)
+// 		const vis = visibleRange(state)
+// 		action.payload.worldX = action.payload.x;
+// 		action.payload.worldY = action.payload.y;
+// 	}
+// )
+
+export const surfaceReducer = combineReducers({
 	pointer: pointerReducer,
 	viewport: viewportReducer,
 	camera: cameraReducer,
-})))
+})
 
 export const pointerClamper = createReducer(surfaceReducer.initalState, (builder) => {
 	builder
