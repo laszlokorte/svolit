@@ -24,7 +24,14 @@ export const selector = (s) => {
 				x: (x + camTransform.translateX)*camTransform.scaleX,
 				y: (y + camTransform.translateY)*camTransform.scaleY,
 			})),
-		}))
+		})),
+		bounds: s.world.polygons.reduce((acc, {vertices}) => vertices.reduce(({minX,minY,maxX,maxY}, {x,y}) => ({
+			minX:Math.min(minX, x),
+			minY:Math.min(minY, y),
+			maxX:Math.max(maxX, x),
+			maxY:Math.max(maxY, y),
+		}), acc), {minX:Infinity,minY:Infinity,maxX:-Infinity,maxY:-Infinity}),
+
 	}
 }
 

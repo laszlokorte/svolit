@@ -38,9 +38,9 @@ export const dispatcher = (d, store) => ({
 	press: (evt) => d(press()),
 	release: (evt) => d(release()),    	
 	resize: (width, height) => d(setSize({width, height})),
-	zoomIn: () => d(zoomIn()),
-	zoomOut: () => d(zoomOut()),
-	zoomWheel: (evt) => d(zoomBy({delta: evt.wheelDelta})),
+	zoomIn: () => d(zoomIn({pivot: eventToWorld(store, evt)})),
+	zoomOut: () => d(zoomOut({pivot: eventToWorld(store, evt)})),
+	zoomWheel: (evt) => d(zoomBy({delta: evt.wheelDelta, pivot: eventToWorld(store, evt)})),
 	panStart: (evt) => {
 		evt.target.setPointerCapture(evt.pointer)
 		d(panStart(eventToWorld(store, evt)))

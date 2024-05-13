@@ -75,14 +75,6 @@ export default function Screen({}) {
       ctx.closePath();
       ctx.fill()
 
-      ctx.beginPath();
-      ctx.arc(stat.pointer.x, stat.pointer.y, 20, 0, 2 * Math.PI);
-      ctx.fillStyle = "white";
-      if(stat.pressed) {
-        ctx.fillStyle = "lightcoral";
-      }
-      ctx.closePath();
-      ctx.fill();
 
 
       ctx.beginPath();
@@ -95,6 +87,19 @@ export default function Screen({}) {
 
 
 
+
+
+
+      ctx.save()
+      ctx.beginPath();
+      doCamWorldTransform(ctx);
+      ctx.rect(world().bounds.minX, world().bounds.minY,
+        world().bounds.maxX - world().bounds.minX,
+        world().bounds.maxY - world().bounds.minY);
+      ctx.restore();
+      ctx.fillStyle = "#eee";
+      ctx.fill();
+
       ctx.fillStyle = "green";
       for(let poly of world().visiblePolygons) {
         ctx.beginPath();
@@ -106,14 +111,27 @@ export default function Screen({}) {
       }
 
 
+        
+      ctx.beginPath();
+      ctx.fillStyle = "rebeccapurple";
+      if(stat.pressed) {
+        ctx.fillStyle = "lightcoral";
+      }
+      ctx.arc(stat.pointer.x, stat.pointer.y, 20, 0, 2 * Math.PI);
+      ctx.fill();
+
       ctx.beginPath();
       ctx.rect(stat.scaling.minX+10, stat.scaling.minY+10, stat.scaling.width-20, stat.scaling.height-20);
       ctx.closePath();
+
+
       ctx.restore()
 
       ctx.strokeStyle = "purple";
       ctx.lineWidth = 2;
       ctx.stroke()
+
+
 
     })
   })

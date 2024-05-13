@@ -29,8 +29,12 @@ export const cameraSlice = createSlice({
     zoomOut: (state) => {
       state.focus.z -= 1
     },
-    zoomBy: (state, {payload: {delta}}) => {
+    zoomBy: (state, {payload: {delta, pivot: {worldX: px, worldY: py}}}) => {
+      const pivotFactor = 1 - 1 / Math.exp(delta/500)
+     
       state.focus.z += delta/500
+      state.focus.x +=  (px - state.focus.x) * pivotFactor
+      state.focus.y +=  (py - state.focus.y) * pivotFactor
     },
     zoomReset: (state) => {
       state.focus.z = 0
@@ -116,3 +120,7 @@ export const {
 } = cameraSlice.selectors
 
 export default cameraSlice.reducer
+
+function lerp(a, b, t) {
+  return a * (1-t) + b*t
+}
